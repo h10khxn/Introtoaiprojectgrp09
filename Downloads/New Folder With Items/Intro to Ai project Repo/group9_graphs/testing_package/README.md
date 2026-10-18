@@ -1,8 +1,15 @@
 # Search Algorithm Testing and Evaluation
 
-This folder contains the testing and evaluation results for the three search algorithms in
-[`main.py`](../main.py): Uniform Cost Search (UCS), Greedy Best-First Search (Greedy) and A*.
-The algorithm code and graph files were not changed for this evaluation.
+← [Back to the project README](../../../../../README.md)
+
+This is the detailed testing documentation for the project. The
+[project README](../../../../../README.md) explains the problem, the algorithms, how to run the program,
+and the main results. This document adds the full method, all nine result tables, the analysis by
+density and graph size, and a description of every column in the result files.
+
+The evaluation covers the three search algorithms in [`main.py`](../main.py): Uniform Cost Search
+(UCS), Greedy Best-First Search (Greedy) and A*. The algorithm code and graph files were not changed
+for this evaluation.
 
 ## Summary
 
