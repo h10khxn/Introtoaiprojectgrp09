@@ -1,0 +1,108 @@
+"T1: Dataset overview (ordered start/goal pairs, start != goal)"
+Graph,Dataset,Nodes,Density,Edges,Cases,Direct-edge,Non-direct
+graph_12_sparse,synthetic,12,sparse,21,132,42,90
+graph_12_medium,synthetic,12,medium,38,132,76,56
+graph_12_dense,synthetic,12,dense,60,132,120,12
+graph_15_sparse,synthetic,15,sparse,30,210,60,150
+graph_15_medium,synthetic,15,medium,53,210,106,104
+graph_15_dense,synthetic,15,dense,75,210,150,60
+graph_20_sparse,synthetic,20,sparse,50,380,100,280
+graph_20_medium,synthetic,20,medium,78,380,156,224
+graph_20_dense,synthetic,20,dense,121,380,242,138
+graph_25_sparse,synthetic,25,sparse,60,600,120,480
+graph_25_medium,synthetic,25,medium,92,600,184,416
+graph_25_dense,synthetic,25,dense,164,600,328,272
+graph_otu_real,campus,12,real,21,132,42,90
+All synthetic,synthetic,,,842,3966,1684,2282
+"Note: The 12 synthetic graphs are 4 node layouts (12, 15, 20, 25 nodes) x 3 densities. The three densities of one layout share identical node positions; denser graphs add edges."
+
+T2: Validation against an independent exact shortest-path calculation (Floyd-Warshall)
+Dataset,Algorithm,Cases,Path found,Path valid,Reported cost correct,Cost = true shortest
+synthetic,UCS,3966,3966,3966,3966,3966
+synthetic,Greedy,3966,3966,3966,3966,2970
+synthetic,A*,3966,3966,3966,3966,3966
+campus,UCS,132,132,132,132,132
+campus,Greedy,132,132,132,132,107
+campus,A*,132,132,132,132,132
+"Note: Path valid = starts at start, ends at goal, uses only real edges, no repeated node. Costs compared exactly using fractions, not floating point."
+
+T3: Main comparison by dataset and case type
+Dataset,Case type,Algorithm,Cases,Shortest-cost paths,% shortest,Mean queue pops,Median queue pops,Mean distinct nodes expanded
+synthetic,direct,UCS,1684,1684,100.0,6.45,6.0,5.45
+synthetic,direct,Greedy,1684,1684,100.0,2.00,2.0,1.00
+synthetic,direct,A*,1684,1684,100.0,2.00,2.0,1.00
+synthetic,non-direct,UCS,2282,2282,100.0,16.97,16.0,13.94
+synthetic,non-direct,Greedy,2282,1286,56.4,3.94,3.0,2.94
+synthetic,non-direct,A*,2282,2282,100.0,4.96,4.0,3.87
+campus,direct,UCS,42,42,100.0,3.57,3.0,2.57
+campus,direct,Greedy,42,42,100.0,2.00,2.0,1.00
+campus,direct,A*,42,42,100.0,2.00,2.0,1.00
+campus,non-direct,UCS,90,90,100.0,8.87,9.0,7.60
+campus,non-direct,Greedy,90,65,72.2,3.49,3.0,2.49
+campus,non-direct,A*,90,90,100.0,3.62,3.0,2.62
+"Note: Queue pops = the existing 'nodes explored' counter in main.py: every item removed from the priority queue, including the goal and any outdated duplicate entries."
+
+T4: How much more Greedy paid when it missed the shortest path
+Dataset,Case type,Cases,Higher-cost cases,% higher-cost,Mean extra cost %,Median extra cost %,Max extra cost %
+synthetic,direct,1684,0,0.0,-,-,-
+synthetic,non-direct,2282,996,43.6,7.01,4.53,52.0
+campus,direct,42,0,0.0,-,-,-
+campus,non-direct,90,25,27.8,11.43,9.51,47.91
+"Note: Extra cost % = (Greedy cost - shortest cost) / shortest cost x 100, over higher-cost cases only."
+
+T5: Synthetic non-direct cases by density
+Density,Cases,UCS mean pops,Greedy mean pops,A* mean pops,Greedy higher-cost cases,Greedy % higher-cost
+sparse,1000,15.00,4.75,6.26,356,35.6
+medium,800,17.23,3.49,4.36,354,44.2
+dense,482,20.65,3.01,3.24,286,59.3
+
+T6: Synthetic non-direct cases by layout nodes
+Layout nodes,Cases,UCS mean pops,Greedy mean pops,A* mean pops,Greedy higher-cost cases,Greedy % higher-cost
+12,158,10.09,3.80,4.72,81,51.3
+15,314,12.25,3.81,4.38,122,38.9
+20,642,16.36,3.56,4.45,315,49.1
+25,1168,19.51,4.21,5.42,478,40.9
+
+T7: What the queue-pop count contains (non-direct cases)
+Dataset,Algorithm,Mean queue pops,Mean expansions,Mean distinct expanded,Mean skipped outdated pops,Mean repeat expansions,Cases with skipped pops,Cases with repeat expansions
+synthetic,UCS,16.973,13.945,13.945,2.028,0.000,1545,0
+synthetic,Greedy,3.942,2.942,2.942,0.000,0.000,0,0
+synthetic,A*,4.955,3.955,3.868,0.000,0.088,0,123
+campus,UCS,8.867,7.600,7.600,0.267,0.000,24,0
+campus,Greedy,3.489,2.489,2.489,0.000,0.000,0,0
+campus,A*,3.622,2.622,2.622,0.000,0.000,0,0
+"Note: queue pops = expansions + skipped outdated pops + 1 goal pop. UCS skips outdated entries but still counts them. A* has no skip check, so outdated entries are expanded again (repeat expansions)."
+
+T8: Measured run time per call on one machine (indicative only)
+Dataset,Case type,Algorithm,Cases,Median time (us),Median spread IQR (us)
+synthetic,direct,UCS,1684,11.66,0.456
+synthetic,direct,Greedy,1684,8.93,0.341
+synthetic,direct,A*,1684,10.37,0.325
+synthetic,non-direct,UCS,2282,21.92,0.978
+synthetic,non-direct,Greedy,2282,14.26,0.619
+synthetic,non-direct,A*,2282,15.73,0.607
+campus,direct,UCS,42,5.48,0.162
+campus,direct,Greedy,42,5.34,0.151
+campus,direct,A*,42,5.67,0.102
+campus,non-direct,UCS,90,9.76,0.379
+campus,non-direct,Greedy,90,9.14,0.352
+campus,non-direct,A*,90,8.74,0.282
+"Note: Each case: 7 timed batches x 50 calls per algorithm, algorithm order shuffled each batch (seed 2026), after warm-up runs, garbage collector off. Python 3.12.10 on Windows-11-10.0.26200-SP0."
+
+T9: Euclidean heuristic vs. rounded edge weights
+Graph,Edges,Edges with weight < straight line,Max overestimate on one edge,Max overestimate of true cost,All weights multiples of 0.01
+graph_12_dense,60,29,0.004912,0.004912,True
+graph_12_medium,38,17,0.004912,0.004912,True
+graph_12_sparse,21,9,0.004912,0.004912,True
+graph_15_dense,75,42,0.004758,0.004758,True
+graph_15_medium,53,31,0.004679,0.004679,True
+graph_15_sparse,30,16,0.004679,0.004679,True
+graph_20_dense,121,66,0.004908,0.004908,True
+graph_20_medium,78,42,0.004878,0.004878,True
+graph_20_sparse,50,28,0.004878,0.004878,True
+graph_25_dense,164,78,0.00493,0.00493,True
+graph_25_medium,92,45,0.004748,0.004748,True
+graph_25_sparse,60,29,0.004436,0.004436,True
+graph_otu_real,21,8,0.004865,0.004865,True
+"Note: Weights are straight-line lengths rounded to 2 decimals; the heuristic uses the unrounded length, so it can be up to 0.005 too high."
+

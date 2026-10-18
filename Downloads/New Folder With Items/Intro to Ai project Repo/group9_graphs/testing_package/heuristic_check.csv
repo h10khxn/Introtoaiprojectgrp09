@@ -1,0 +1,14 @@
+graph,dataset,edges,edges_weight_below_straight_line,max_consistency_overestimate,max_admissibility_overestimate,all_weights_multiple_of_0.01
+graph_12_dense.json,synthetic,60,29,0.004912,0.004912,True
+graph_12_medium.json,synthetic,38,17,0.004912,0.004912,True
+graph_12_sparse.json,synthetic,21,9,0.004912,0.004912,True
+graph_15_dense.json,synthetic,75,42,0.004758,0.004758,True
+graph_15_medium.json,synthetic,53,31,0.004679,0.004679,True
+graph_15_sparse.json,synthetic,30,16,0.004679,0.004679,True
+graph_20_dense.json,synthetic,121,66,0.004908,0.004908,True
+graph_20_medium.json,synthetic,78,42,0.004878,0.004878,True
+graph_20_sparse.json,synthetic,50,28,0.004878,0.004878,True
+graph_25_dense.json,synthetic,164,78,0.00493,0.00493,True
+graph_25_medium.json,synthetic,92,45,0.004748,0.004748,True
+graph_25_sparse.json,synthetic,60,29,0.004436,0.004436,True
+graph_otu_real.json,campus,21,8,0.004865,0.004865,True
